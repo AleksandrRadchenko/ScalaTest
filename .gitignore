@@ -1,0 +1,10 @@
+*.class
+.idea
+out
+docs
+*.swp
+*.iml
+/.gradle/
+~*
+target
+project
