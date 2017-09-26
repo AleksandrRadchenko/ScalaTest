@@ -1,0 +1,5 @@
+git fakeTeamwork
+
+There are three feature branches -- side1 side2 and side3
+We want to push each one of these features, in order, to the remote
+The remote has since been updated, so we will need to incorporate that work as well
