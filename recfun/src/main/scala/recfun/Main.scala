@@ -40,19 +40,15 @@ object Main {
     * Exercise 3
     */
   def countChange(money: Int, coins: List[Int]): Int = {
-    var ways = 0
-
-    def countChange0(money: Int, coins: List[Int]): Unit = {
-      if (coins.nonEmpty) {
-        if (money - coins.head > 0) countChange0(money - coins.head, coins)
-        else {
-          if (money - coins.head == 0) ways += 1
-        }
-        countChange0(money, coins.tail)
+    def countChange0(money: Int, coins: List[Int], ways: Int): Int = {
+      if (coins.isEmpty) ways
+      else {
+        if (money - coins.head > 0) countChange0(money - coins.head, coins, ways)
+        else if (money - coins.head == 0) countChange0(money, coins.tail, ways + 1)
+        countChange0(money, coins.tail, ways)
       }
     }
-
-    countChange0(money, coins)
-    ways
+    println("recompiled")
+    countChange0(money, coins, 0)
   }
 }
