@@ -9,3 +9,5 @@ val empt  = List()
 val s5 = empt equals Nil
 
 s2.sorted.reverse
+var a = 2
+a+1

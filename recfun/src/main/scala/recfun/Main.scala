@@ -40,20 +40,19 @@ object Main {
     * Exercise 3
     */
   def countChange(money: Int, coins: List[Int]): Int = {
+    var ways = 0
 
-    def countChange0(money: Int, coins: List[Int], ways: Int): Int = {
-      if (coins.isEmpty) ways
-      else if (money % coins.head == 0) countChange0(money, coins.tail, ways + 1)
-      else countChange0(money % coins.head, coins.tail, ways)
+    def countChange0(money: Int, coins: List[Int]): Unit = {
+      if (coins.nonEmpty) {
+        if (money - coins.head > 0) countChange0(money - coins.head, coins)
+        else {
+          if (money - coins.head == 0) ways += 1
+        }
+        countChange0(money, coins.tail)
+      }
     }
 
-    def countChange1(money: Int, coins: List[Int], ways: Int): Int = {
-      if (money == 0) ways
-      else if (money - coins.head > 0)
-        countChange1(money - coins.head, coins, countChange0(money, coins, ways))
-      else countChange1(money, coins.tail, ways)
-    }
-
-    countChange1(money, coins.sorted.reverse, 0)
+    countChange0(money, coins)
+    ways
   }
 }
