@@ -1,13 +1,14 @@
-import scala.collection.immutable
+def factorial(n: Long, accum: Long): Long = {
+  if (n == 1) accum else factorial(n - 1, accum * n)
+}
 
-val s = new ::[Int](4, Nil)
-val s1 = s.::(5).::(6)
-val s2 = List(1,2,3)
-val s3 = Nil.::(3)
-val s4 = 3 :: Nil
-val empt  = List()
-val s5 = empt equals Nil
+def factorial2(n: Long, accum: Long): Long = {
+  def loop(i: Int, accum: Long): Long = {
+    if (accum < 0) println(i)
+    if (i == n) accum
+    else loop(i + 1, accum * i)
+  }
+  loop(1, accum)
+}
 
-s2.sorted.reverse
-var a = 2
-a+1
+factorial2(22, 1)
