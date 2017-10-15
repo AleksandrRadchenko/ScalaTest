@@ -17,5 +17,3 @@ libraryDependencies += "com.typesafe.akka" %% "akka-http" % akkaHttpVersion
 libraryDependencies += "com.typesafe.akka" %% "akka-http-spray-json" % akkaSprayJsonVersion
 libraryDependencies += "io.spray" %% "spray-json" % ioSprayJsonVersion
 libraryDependencies += "org.scala-lang" % "scala-reflect" % scalaReflectVersion
-
-_root_.org.jetbrains.sbt.StructureKeys.sbtStructureOptions in Global := "download resolveClassifiers"
