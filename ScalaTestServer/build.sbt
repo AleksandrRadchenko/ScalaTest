@@ -10,6 +10,7 @@ val akkaHttpVersion = "10.0.5"
 val akkaSprayJsonVersion = "10.0.10"
 val ioSprayJsonVersion = "1.3.3"
 val scalaReflectVersion = "2.12.3"
+val slickVersion = "3.2.0"
 
 //libraryDependencies += "com.lihaoyi" %% "upickle" % "0.4.3"
 libraryDependencies += "com.lihaoyi" %% "upickle" % "0.4.4"
@@ -17,3 +18,5 @@ libraryDependencies += "com.typesafe.akka" %% "akka-http" % akkaHttpVersion
 libraryDependencies += "com.typesafe.akka" %% "akka-http-spray-json" % akkaSprayJsonVersion
 libraryDependencies += "io.spray" %% "spray-json" % ioSprayJsonVersion
 libraryDependencies += "org.scala-lang" % "scala-reflect" % scalaReflectVersion
+libraryDependencies ++= Seq("com.typesafe.slick" %% "slick" % slickVersion,
+  "com.typesafe.slick" %% "slick-hikaricp" % slickVersion)
