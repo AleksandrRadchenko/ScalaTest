@@ -185,10 +185,18 @@ class FunSetSuite extends FunSuite {
       val s: Set = union(s1, s2)
       val s10plus5 : Set = map(s10, (x: Int) => x + 5)
       val s10sqr2 : Set = map(s10, (x: Int) => x * x)
+      val s4 = singletonSet(4)
+      val s5 = singletonSet(5)
+      val s7 = singletonSet(7)
+      val s1000 = singletonSet(1000)
+      val customSet: Set = union(s1, union(s3, union(s4, union(s5, union(s7, s1000)))))
+      val customSetMinus1: Set = map(customSet, (x: Int) => x - 1)
       assert(contains(s10plus5, 1), "contains 1")
       assert(!contains(s10plus5, -8), "not contains -8")
       assert(contains(s10sqr2, 49), "sqr contains 49")
       assert(!contains(s10sqr2, 121), "sqr !contains 121")
+      assert(contains(customSetMinus1, 999), "custSet-1 contains 999")
+      assert(contains(customSetMinus1, 0), "custSet-1 contains 0")
     }
   }
 

@@ -75,8 +75,8 @@ object FunSets {
    */
     def map(s: Set, f: Int => Int): Set = (x: Int) => {
       def iter(a: Int): Boolean = {
-        if (a == bound) false
-        else if (f(a) == x && s(a)) true
+        if (f(a) == x && s(a)) true
+        else if (a >= bound) false
         else iter(a + 1)
       }
       iter(-bound)
