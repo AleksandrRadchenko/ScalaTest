@@ -1,4 +1,6 @@
 // Rational numbers (week3 in Odersky's code)
+// Lecture 2.5
+import scala.Predef
 
 val x = new Rational(1, 3)
 val y = new Rational(5, 7)
