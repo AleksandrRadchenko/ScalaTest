@@ -15,6 +15,8 @@ x.less(y)
 x.max(y)
 new Rational(5,5)
 
+val a = if (true) 1 else false
+
 class Rational(x: Int, y: Int) {
   require(y != 0, "denominator must not be zero")
   def this(x: Int) = this(x, 1)
