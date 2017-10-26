@@ -27,6 +27,30 @@ class TweetSetSuite extends FunSuite {
 
   def size(set: TweetSet): Int = asSet(set).size
 
+  test("mostRetweeted: set5 = 20") {
+    new TestSets {
+      assert(set5.mostRetweeted.retweets === 20)
+    }
+  }
+
+  test("mostRetweeted: set4d union set4c = 20") {
+    new TestSets {
+      assert((set4d union set4c).mostRetweeted.retweets === 20)
+    }
+  }
+
+  test("mostRetweeted: c&d = 20") {
+    new TestSets {
+      assert(set1.incl(c).incl(d).mostRetweeted === d)
+    }
+  }
+
+  test("moreRetweeted: 9 > 7") {
+    new TestSets {
+      assert((d moreRetw c) === d)
+    }
+  }
+
   test("filter: on empty set") {
     new TestSets {
       assert(size(set1.filter(tw => tw.user == "a")) === 0)
@@ -63,11 +87,19 @@ class TweetSetSuite extends FunSuite {
     }
   }
 
+  test("union: 2+3 = 3") {
+    new TestSets {
+      val a = set2.union(set1).union(set3).union(set5).foreach(println)
+      val b = set3.union(set5).foreach(println)
+    }
+  }
+
   test("descending: set5") {
     new TestSets {
       val trends = set5.descendingByRetweet
       assert(!trends.isEmpty)
       assert(trends.head.user == "a" || trends.head.user == "b")
+      assert(trends.tail.tail.head.user == "d" || trends.tail.tail.tail.head.user == "c")
     }
   }
 
