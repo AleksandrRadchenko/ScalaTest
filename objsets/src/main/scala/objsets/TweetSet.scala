@@ -144,17 +144,14 @@ class NonEmpty(elem: Tweet, left: TweetSet, right: TweetSet) extends TweetSet {
   }
 
   override def union(that: TweetSet): TweetSet = {
-    (left union right union that) incl elem
+    left union (right union (that incl elem))
   }
 
-  private val EmptyTweet = new Tweet("", "", Int.MinValue)
   override def mostRetweeted: Tweet = {
-    elem moreRetw {
-      (if (!left.isEmpty) left.mostRetweeted
-      else EmptyTweet)
-        .moreRetw(if (!right.isEmpty) right.mostRetweeted
-        else EmptyTweet)
-    }
+      if (left.isEmpty && right.isEmpty) elem
+      else if (left.isEmpty) elem moreRetw right.mostRetweeted
+      else if (right.isEmpty) elem moreRetw left.mostRetweeted
+      else elem moreRetw left.mostRetweeted moreRetw right.mostRetweeted
   }
 
   override def descendingByRetweet: TweetList = {
