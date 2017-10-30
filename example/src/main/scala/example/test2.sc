@@ -1,5 +1,6 @@
 val xs = List(1,2)
 val ys = List(4,5,6,7)
+val b: Boolean = false
 xs.map(_ * 2)
 xs.flatMap(_ => "C")
 
@@ -17,3 +18,4 @@ xs flatMap {x => ys map {y => x*y}}
 for (x <- xs; y <- ys) {
   println("%d/%d = %.1f".format(x, y, x/y.toFloat))
 }
+
