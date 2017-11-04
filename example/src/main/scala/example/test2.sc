@@ -19,3 +19,17 @@ for (x <- xs; y <- ys) {
   println("%d/%d = %.1f".format(x, y, x/y.toFloat))
 }
 
+
+def methodA(s: String) = ???
+def methodB(f: () => String) = ???
+def f = "foo"
+def f2() = "foo"
+methodA(f)
+methodB(f) // error!
+methodA(f()) // error!
+methodB(f()) // error!
+
+methodA(f2())
+methodB(f2()) // error!
+methodA(f2)
+methodB(f2)
