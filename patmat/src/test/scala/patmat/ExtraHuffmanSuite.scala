@@ -16,9 +16,7 @@ class ExtraHuffmanSuite extends FunSuite {
   test("makeCodeTree test") {
     new TestTrees {
       val sampleTree: Fork = makeCodeTree(
-        makeCodeTree(Leaf('x', 1), Leaf('e', 1)),
-        Leaf('t', 2)
-      )
+        makeCodeTree(Leaf('x', 1), Leaf('e', 1)), Leaf('t', 2))
       assert(sampleTree == Fork(Fork(Leaf('x',1),Leaf('e',1),List('x', 'e'),2),Leaf('t',2),List('x', 'e', 't'),4))
     }
   }
@@ -40,42 +38,34 @@ class ExtraHuffmanSuite extends FunSuite {
   test("makeOrderedLeafList test") {
     new TestTrees {
       val t: List[(Char, Int)] = times(List('a', 'b', 'b', 'g', 'g', 'b', 'a'))
-      assert(makeOrderedLeafList(t) == List(Leaf('b',3), Leaf('a',2), Leaf('g',2)))
+      assert(makeOrderedLeafList(t) == List(Leaf('a',2), Leaf('g',2), Leaf('b',3)))
     }
   }
 
   test("combine test") {
     new TestTrees {
-      private val ordered = List(Leaf('b',5), Leaf('a',3), Leaf('g',1))
+      private val ordered = List(Leaf('g',1), Leaf('a',3), Leaf('b',5))
       private val expected = List(
-        Leaf('b',5),
-        Fork(Leaf('a',3), Leaf('g',1), List('a', 'g'), 4))
+        Fork(Leaf('g',1), Leaf('a',3), List('g', 'a'), 4),
+        Leaf('b',5)
+      )
       assert(combine(ordered) == expected)
     }
   }
 
   test("insertNode test") {
     new TestTrees {
-      private val ordered = List(Leaf('b',5), Leaf('a',3), Leaf('g',1))
+      private val ordered = List(Leaf('g',1), Leaf('a',3), Leaf('b',5))
       private val newNode = Leaf('u', 2)
-      assert(insertNode(ordered, newNode) == List(Leaf('b',5), Leaf('a',3), Leaf('u', 2), Leaf('g',1)))
+      assert(insertNode(ordered, newNode) == List(Leaf('g',1), Leaf('u', 2), Leaf('a',3), Leaf('b',5)))
     }
   }
 
   test("fullyCombined test") {
     new TestTrees {
-      private val ordered = List(Leaf('b',3), Leaf('a',2), Leaf('g',2))
-      private val expected = List(makeCodeTree(Fork(Leaf('a', 2), Leaf('g', 2), List('a', 'g'), 4), Leaf('b', 3)))
-      val fullyCombined = until(singleton, combine)(ordered)
-      assert(fullyCombined == expected)
-    }
-  }
-
-  test("fullyCombined test2") {
-    new TestTrees {
-      private val ordered = List(Leaf('b',5), Leaf('a',3), Leaf('g',1))
-      private val expected = List(Fork(Leaf('b', 5), Fork(Leaf('a', 3), Leaf('g', 1), List('a', 'g'), 4), List('b', 'a', 'g'), 9))
-      val fullyCombined = until(singleton, combine)(ordered)
+      private val ordered = List(Leaf('g',1), Leaf('a',3), Leaf('b',5))
+      private val expected = List(Fork(Fork(Leaf('g',1), Leaf('a',3), List('g', 'a'), 4), Leaf('b',5), List('g', 'a', 'b'), 9))
+      private val fullyCombined = until(singleton, combine)(ordered)
       assert(fullyCombined == expected)
     }
   }
@@ -83,8 +73,8 @@ class ExtraHuffmanSuite extends FunSuite {
   test("createCodeTree test") {
     new TestTrees {
       private val chars = List('a', 'b', 'b', 'g', 'b', 'a', 'b', 'a', 'b')
-      private val expected = Fork(Leaf('b', 5), Fork(Leaf('a', 3), Leaf('g', 1), List('a', 'g'), 4), List('b', 'a', 'g'), 9)
-      val codeTree = createCodeTree(chars)
+      private val expected = Fork(Fork(Leaf('g',1), Leaf('a',3), List('g', 'a'), 4), Leaf('b',5), List('g', 'a', 'b'), 9)
+      private val codeTree = createCodeTree(chars)
       assert(codeTree == expected)
     }
   }
@@ -92,8 +82,29 @@ class ExtraHuffmanSuite extends FunSuite {
   test("createCodeTree2 test") {
     new TestTrees {
       private val chars = List()
-      val codeTree = intercept[IllegalArgumentException](createCodeTree(chars))
-//      println(codeTree)
+      private val codeTree = intercept[IllegalArgumentException](createCodeTree(chars))
+    }
+  }
+
+  test("decode test") {
+    new TestTrees {
+      private val bits = List(1,0,1,1)
+      private val codeTree = Fork(Leaf('b', 5), Fork(Leaf('a', 3), Leaf('g', 1), List('a', 'g'), 4), List('b', 'a', 'g'), 9)
+      assert(decode(codeTree, bits) == "ag".toList)
+    }
+  }
+
+  test("decodedSecret test") {
+    new TestTrees {
+      println(decodedSecret.mkString)
+    }
+  }
+
+  test("charToCode test") {
+    new TestTrees {
+      private val codeTree = Fork(Leaf('b', 5), Fork(Leaf('a', 3), Leaf('g', 1), List('a', 'g'), 4), List('b', 'a', 'g'), 9)
+      private val char = 'a'
+      assert(charToCode(codeTree, char) == List(1,0))
     }
   }
 

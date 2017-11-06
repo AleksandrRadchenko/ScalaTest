@@ -86,6 +86,7 @@ object Huffman {
       case List() => result
       case ch :: tail => loop(insert(result, ch), tail)
     }
+
     loop(List.empty, chars)
   }
 
@@ -104,7 +105,7 @@ object Huffman {
     */
   def makeOrderedLeafList(freqs: List[(Char, Int)]): List[Leaf] =
     freqs.map((a: (Char, Int)) => Leaf(a._1, a._2))
-      .sortBy(_.char).reverse.sortBy(_.weight).reverse
+      .sortBy(_.char).sortBy(_.weight)
 
   /**
     * Checks whether the list `trees` contains only one single code tree.
@@ -126,13 +127,13 @@ object Huffman {
   def combine(trees: List[CodeTree]): List[CodeTree] =
     if (trees.size < 2) trees
     else {
-      val newNode = makeCodeTree(trees(trees.size - 2), trees.last)
-      insertNode(trees.take(trees.size - 2), newNode)
+      val newNode = makeCodeTree(trees.head, trees.tail.head)
+      insertNode(trees.tail.tail, newNode)
     }
 
   def insertNode(list: List[CodeTree], node: CodeTree): List[CodeTree] =
     if (list.isEmpty) List(node)
-    else if (list.head.wei <= node.wei) node :: list
+    else if (node.wei <= list.head.wei) node :: list
     else list.head :: insertNode(list.tail, node)
 
   /**
@@ -175,7 +176,21 @@ object Huffman {
     * This function decodes the bit sequence `bits` using the code tree `tree` and returns
     * the resulting list of characters.
     */
-  def decode(tree: CodeTree, bits: List[Bit]): List[Char] = ???
+  def decode(tree: CodeTree, bits: List[Bit]): List[Char] = {
+    def loop(treeTail: CodeTree, bitsTail: List[Bit]): List[Char] =
+      treeTail match {
+        case l: Leaf => l.char :: loop(tree, bitsTail)
+        case f: Fork =>
+          if (bitsTail.isEmpty)
+            List.empty[Char]
+        else
+            bitsTail.head match {
+          case 0 => loop(f.left, bitsTail.tail)
+          case 1 => loop(f.right, bitsTail.tail)
+        }
+      }
+    loop(tree, bits)
+  }
 
   /**
     * A Huffman coding tree for the French language.
@@ -193,7 +208,7 @@ object Huffman {
   /**
     * Write a function that returns the decoded secret
     */
-  def decodedSecret: List[Char] = ???
+  def decodedSecret: List[Char] = decode(frenchCode, secret)
 
 
   // Part 4a: Encoding using Huffman tree
@@ -202,7 +217,22 @@ object Huffman {
     * This function encodes `text` using the code tree `tree`
     * into a sequence of bits.
     */
-  def encode(tree: CodeTree)(text: List[Char]): List[Bit] = ???
+  def encode(tree: CodeTree)(text: List[Char]): List[Bit] = {
+    tree match {
+      case l: Leaf => List.empty
+      case f: Fork => ???
+
+    }
+    ???
+  }
+
+  def charToCode(tree: CodeTree, ch: Char): List[Bit] = {
+    tree match {
+      case l: Leaf => List.empty
+      case f: Fork => if (f.chars.contains(ch))
+    }
+  }
+
 
   // Part 4b: Encoding using code table
 
