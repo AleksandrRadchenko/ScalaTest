@@ -86,7 +86,6 @@ object Huffman {
       case List() => result
       case ch :: tail => loop(insert(result, ch), tail)
     }
-
     loop(List.empty, chars)
   }
 
@@ -154,7 +153,7 @@ object Huffman {
     *  - try to find sensible parameter names for `xxx`, `yyy` and `zzz`.
     */
   def until(singleton: List[CodeTree] => Boolean, combine: List[CodeTree] => List[CodeTree])(trees: List[CodeTree]): List[CodeTree] = {
-    if (singleton(trees)) trees
+    if (singleton(trees) || trees.isEmpty) trees
     else until(singleton, combine)(combine(trees))
   }
 
@@ -164,7 +163,8 @@ object Huffman {
     * The parameter `chars` is an arbitrary text. This function extracts the character
     * frequencies from that text and creates a code tree based on them.
     */
-  def createCodeTree(chars: List[Char]): CodeTree = ???
+  def createCodeTree(chars: List[Char]): CodeTree = if (chars.isEmpty) throw new IllegalArgumentException("List of chars is empty")
+  else until(singleton, combine)(makeOrderedLeafList(times(chars))).head
 
 
   // Part 3: Decoding
