@@ -103,8 +103,36 @@ class ExtraHuffmanSuite extends FunSuite {
   test("charToCode test") {
     new TestTrees {
       private val codeTree = Fork(Leaf('b', 5), Fork(Leaf('a', 3), Leaf('g', 1), List('a', 'g'), 4), List('b', 'a', 'g'), 9)
-      private val char = 'a'
-      assert(charToCode(codeTree, char) == List(1,0))
+      private val charA = 'a'
+      private val charG = 'g'
+      private val charB = 'b'
+      assert(charToCode(codeTree, charA) == List(1,0))
+      assert(charToCode(codeTree, charG) == List(1,1))
+      assert(charToCode(codeTree, charB) == List(0))
+    }
+  }
+
+  test("encode test") {
+    new TestTrees {
+      private val codeTree = Fork(Leaf('b', 5), Fork(Leaf('a', 3), Leaf('g', 1), List('a', 'g'), 4), List('b', 'a', 'g'), 9)
+      private val text = "agbgb".toList
+      assert(encode(codeTree)(text) == List(1,0,1,1,0,1,1,0))
+    }
+  }
+
+  test("convert test") {
+    new TestTrees {
+      private val codeTree = Fork(Leaf('b', 5), Fork(Leaf('a', 3), Leaf('g', 1), List('a', 'g'), 4), List('b', 'a', 'g'), 9)
+      private val codeTable = List(('b', List(0)), ('a', List(1,0)), ('g', List(1,1)))
+      assert(convert(codeTree) == codeTable)
+    }
+  }
+
+  test("quickEncode test") {
+    new TestTrees {
+      private val codeTree = Fork(Leaf('b', 5), Fork(Leaf('a', 3), Leaf('g', 1), List('a', 'g'), 4), List('b', 'a', 'g'), 9)
+      private val text = "agbgb".toList
+      assert(quickEncode(codeTree)(text) == List(1,0,1,1,0,1,1,0))
     }
   }
 
