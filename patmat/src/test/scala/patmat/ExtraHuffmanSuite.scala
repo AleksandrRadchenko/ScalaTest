@@ -27,6 +27,8 @@ class ExtraHuffmanSuite extends FunSuite {
     new TestTrees {
       val t: List[(Char, Bit)] = times(List('a', 'b', 'a'))
       println(t)
+      val t3: List[(Char, Bit)] = times(List('a', 'b', 'b', 'g', 'g', 'b', 'a'))
+      println(t3)
     }
   }
   test("insert test") {
@@ -35,7 +37,56 @@ class ExtraHuffmanSuite extends FunSuite {
       println(t)
     }
   }
+  test("makeOrderedLeafList test") {
+    new TestTrees {
+      val t: List[(Char, Bit)] = times(List('a', 'b', 'b', 'g', 'g', 'b', 'a'))
+      println(t)
+      val ordered = makeOrderedLeafList(t)
+      println(ordered)
+    }
+  }
 
+  test("combine test") {
+    new TestTrees {
+      private val ordered = List(Leaf('b',5), Leaf('a',3), Leaf('g',1))
+      private val expected = List(
+        Leaf('b',5),
+        Fork(Leaf('a',3), Leaf('g',1), List('a', 'g'), 4))
+      assert(combine(ordered) == expected)
+    }
+  }
 
+  test("insertNode test") {
+    new TestTrees {
+      private val ordered = List(Leaf('b',5), Leaf('a',3), Leaf('g',1))
+      private val newNode = Leaf('u', 2)
+      //      println(insertNode(ordered, newNode))
+      assert(insertNode(ordered, newNode) == List(Leaf('b',5), Leaf('a',3), Leaf('u', 2), Leaf('g',1)))
+    }
+  }
+
+  test("fullyCombined test") {
+    new TestTrees {
+      private val ordered = List(Leaf('b',3), Leaf('a',2), Leaf('g',2))
+      private val expected = List(makeCodeTree(Fork(Leaf('a', 2), Leaf('g', 2), List('a', 'g'), 4), Leaf('b', 3)))
+//      println("Ordered = " + ordered)
+//      println("Expected = " + expected)
+      val fullyCombined = until(singleton, combine)(ordered)
+//      println("Fully Combined = " + fullyCombined)
+      assert(fullyCombined == expected)
+    }
+  }
+
+  test("fullyCombined test2") {
+    new TestTrees {
+      private val ordered = List(Leaf('b',5), Leaf('a',3), Leaf('g',1))
+      private val expected = List(Fork(Leaf('b', 5), Fork(Leaf('a', 3), Leaf('g', 1), List('a', 'g'), 4), List('b', 'a', 'g'), 9))
+//      println("Ordered =        " + ordered)
+//      println("Expected =       " + expected)
+      val fullyCombined = until(singleton, combine)(ordered)
+//      println("Fully Combined = " + fullyCombined)
+      assert(fullyCombined == expected)
+    }
+  }
 
 }
